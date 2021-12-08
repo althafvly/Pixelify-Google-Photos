@@ -2,5 +2,13 @@
 <resources>
     <string-array name="module_scope">
         <item>com.google.android.apps.photos</item>
+        <item>com.tencent.ig</item>
+        <item>com.pubg.krmobile</item>
+        <item>com.vng.pubgmobile</item>
+        <item>com.rekoo.pubgm</item>
+        <item>com.pubg.imobile</item>
+        <item>com.pubg.newstate</item>
+        <item>com.gameloft.android.ANMP.GloftA9HM</item>
+        <item>com.activision.callofduty.shooter</item>
     </string-array>
 </resources>

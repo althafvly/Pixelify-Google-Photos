@@ -112,6 +112,20 @@ object DeviceProps {
         }
     }
 
+    fun getPUBGPackages(): List<String> {
+        return listOf("com.tencent.ig",
+            "com.pubg.krmobile",
+            "com.vng.pubgmobile",
+            "com.rekoo.pubgm",
+            "com.pubg.imobile",
+            "com.pubg.newstate",
+            "com.gameloft.android.ANMP.GloftA9HM")
+    }
+
+    fun getCODPackages(): List<String> {
+        return listOf( "com.activision.callofduty.shooter")
+    }
+
     /**
      * Class to contain device names and their respective build properties.
      * @param deviceName Actual device names, example "Pixel 4a".
@@ -238,6 +252,28 @@ object DeviceProps {
                 Pair("FINGERPRINT", "google/raven/raven:12/SD1A.210817.036/7805805:user/release-keys"),
             ),
             "Pixel 2021",
+        ),
+    )
+
+    /**
+     * List of all devices which supports 90-120 and their build props.
+     */
+    val gameDevices = listOf(
+
+        DeviceEntries("None", hashMapOf(), "None"),
+
+        DeviceEntries(
+            "OnePlus 7 Pro", hashMapOf(
+                Pair("MODEL", "GM1917"),
+            ),
+            "",
+        ),
+
+        DeviceEntries(
+            "Sony Xperia 5 II", hashMapOf(
+                Pair("MODEL", "SO-52A"),
+            ),
+            "",
         ),
     )
 

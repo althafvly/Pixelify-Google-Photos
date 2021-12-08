@@ -15,6 +15,8 @@
     <!--activity_main.xml-->
     <string name="reset">Reset</string>
     <string name="device_to_spoof">Device to spoof</string>
+    <string name="device_games_to_spoof">Device to spoof games</string>
+    <string name="spoofs_games">Spoofs build.prop for games.</string>
     <string name="spoofs_build_and_features">Spoofs build.prop and feature flags.</string>
     <string name="customize_feature_flags">Customize feature flags.</string>
     <string name="feature_flags_changed">Feature flags changed!</string>
@@ -44,8 +46,16 @@
         # Fix user selection not being read in higher Android versions.\n
     </string>
 
+    <string name="supported_games">
+        \n
+        - PUBG (90fps) -> OnePlus 7 Pro\n
+        - COD (120fps) -> Sony Xperia 5 II\n
+        - Asphalt 9 (120fps) -> OnePlus 7 Pro\n
+    </string>
+
     <!--menu_activity_main.xml-->
     <string name="changelog">Change log</string>
+    <string name="games">Supported Games</string>
 
     <!--ActivityMain.xml-->
     <string name="please_force_stop_google_photos">Please force stop Google Photos to take effect.</string>

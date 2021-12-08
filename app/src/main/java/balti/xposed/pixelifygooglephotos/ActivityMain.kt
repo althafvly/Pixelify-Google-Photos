@@ -108,6 +108,7 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
         val overrideROMFeatureLevels = findViewById<SwitchCompat>(R.id.override_rom_feature_levels)
         val switchEnforceGooglePhotos = findViewById<SwitchCompat>(R.id.spoof_only_in_google_photos_switch)
         val deviceSpooferSpinner = findViewById<Spinner>(R.id.device_spoofer_spinner)
+        val gameSpooferSpinner = findViewById<Spinner>(R.id.game_spoofer_spinner)
         val forceStopGooglePhotos = findViewById<Button>(R.id.force_stop_google_photos)
         val openGooglePhotos = findViewById<ImageButton>(R.id.open_google_photos)
         val telegramLink = findViewById<TextView>(R.id.telegram_group)
@@ -159,6 +160,34 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
                     apply()
                     showRebootSnack()
                 }
+            }
+        }
+
+        /**
+         * See [DeviceSpoofer].
+         */
+        gameSpooferSpinner.apply {
+            val deviceNames = DeviceProps.gameDevices.map { it.deviceName }
+            val aa = ArrayAdapter(this@ActivityMain,android.R.layout.simple_spinner_item, deviceNames)
+
+            aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter = aa
+            val defaultSelection = pref?.getString(PREF_DEVICE_TO_SPOOF, DeviceProps.defaultDeviceName)
+            /** Second argument is `false` to prevent calling [peekFeatureFlagsChanged] on initialization */
+            setSelection(aa.getPosition(defaultSelection), false)
+
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val deviceName = aa.getItem(position)
+                    pref?.edit()?.apply {
+                        putString(PREF_DEVICE_TO_SPOOF, deviceName)
+                        apply()
+                    }
+
+                    showRebootSnack()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
         }
 
@@ -272,6 +301,17 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
     }
 
     /**
+     * Method to show supported Games.
+     */
+    private fun showGames(){
+        AlertDialog.Builder(this)
+            .setTitle(R.string.games)
+            .setMessage(R.string.supported_games)
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
+    }
+
+    /**
      * Populate menu.
      * Menu contains option to show changelog.
      */
@@ -286,6 +326,7 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.menu_changelog -> showChangeLog()
+            R.id.supported_games -> showGames()
         }
         return super.onOptionsItemSelected(item)
     }

@@ -4,6 +4,8 @@ import android.util.Log
 import balti.xposed.pixelifygooglephotos.Constants.PACKAGE_NAME_GOOGLE_PHOTOS
 import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF
 import balti.xposed.pixelifygooglephotos.Constants.PREF_STRICTLY_CHECK_GOOGLE_PHOTOS
+import balti.xposed.pixelifygooglephotos.DeviceProps.getCODPackages
+import balti.xposed.pixelifygooglephotos.DeviceProps.getPUBGPackages
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XSharedPreferences
 import de.robv.android.xposed.XposedBridge
@@ -50,11 +52,28 @@ class DeviceSpoofer: IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam?) {
 
         /**
+         * If user selected any non-pixel, check packages and apply props for those only.
+         */
+        var isSupported = true
+        val deviceName = pref.getString(PREF_DEVICE_TO_SPOOF, DeviceProps.defaultDeviceName)
+        if (deviceName == "OnePlus 7 Pro") {
+            val pubgPackages = getPUBGPackages()
+            for (element in pubgPackages) {
+                if (lpparam?.packageName == element) isSupported = false
+            }
+        } else if (deviceName == "Sony Xperia 5 II") {
+            val codPackages = getCODPackages()
+            for (element in codPackages) {
+                if (lpparam?.packageName == element) isSupported = false
+            }
+        }
+
+        /**
          * If user selects to never use this on any other app other than Google photos,
          * then check package name and return if necessary.
          */
         if (pref.getBoolean(PREF_STRICTLY_CHECK_GOOGLE_PHOTOS, true) &&
-            lpparam?.packageName != PACKAGE_NAME_GOOGLE_PHOTOS) return
+            lpparam?.packageName != PACKAGE_NAME_GOOGLE_PHOTOS && isSupported) return
 
         log("Loaded DeviceSpoofer for ${lpparam?.packageName}")
         log("Device spoof: ${finalDeviceToSpoof?.deviceName}")

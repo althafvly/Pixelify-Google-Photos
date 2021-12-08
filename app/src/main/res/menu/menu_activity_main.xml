@@ -8,4 +8,10 @@
         android:title="@string/changelog"
         />
 
+    <item android:id="@+id/supported_games"
+        android:icon="@drawable/ic_game"
+        app:showAsAction="ifRoom"
+        android:title="@string/games"
+        />
+
 </menu>
