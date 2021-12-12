@@ -298,7 +298,7 @@ object DeviceProps {
      * Default name of device to spoof.
      */
     val defaultDeviceName = "Pixel 5"
-    val defaultDeviceNameGame = "OnePlus 7 Pro"
+    val defaultDeviceNameGame = "None"
 
     /**
      * Default feature level to spoof up to. Corresponds to what is expected for the device in [defaultDeviceName].

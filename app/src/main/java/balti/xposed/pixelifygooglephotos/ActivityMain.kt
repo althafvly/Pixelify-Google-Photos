@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Paint
 import android.net.Uri
 import android.os.AsyncTask
-import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.*
@@ -15,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import balti.xposed.pixelifygooglephotos.Constants.FIELD_LATEST_VERSION_CODE
+import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_SUPPORT_HIGH_REFRESH_RATE
 import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF
 import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF_GAME
 import balti.xposed.pixelifygooglephotos.Constants.PREF_LAST_VERSION
@@ -31,6 +31,7 @@ import com.google.android.material.snackbar.Snackbar
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.net.URL
+import kotlin.math.roundToInt
 
 
 class ActivityMain: AppCompatActivity(R.layout.activity_main) {
@@ -55,10 +56,28 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
         if (pref == null) return // don't display snackbar if module not active.
         val rootView = findViewById<ScrollView>(R.id.root_view_for_snackbar)
         if (isPhotos) {
-            Snackbar.make(rootView, R.string.please_force_stop_google_photos, Snackbar.LENGTH_SHORT)
-                .show()
+            Snackbar.make(rootView, R.string.please_force_stop_google_photos, Snackbar.LENGTH_SHORT).show()
         } else {
             Snackbar.make(rootView, R.string.please_force_stop, Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Update TextView according to refresh rate.
+     */
+    private fun updateTextView() {
+        val gameSpooferSpinner = findViewById<Spinner>(R.id.game_spoofer_spinner)
+        val deviceSpooferDesc = findViewById<TextView>(R.id.device_spoofer_desc)
+        if (!hasHighRefreshRate()) {
+            deviceSpooferDesc.setText(R.string.refresh_rate_desc)
+            gameSpooferSpinner.isEnabled = false
+        } else {
+            deviceSpooferDesc.setText(R.string.spoofs_build_and_features)
+            gameSpooferSpinner.isEnabled = true
+        }
+        pref?.edit()?.run {
+            putBoolean(PREF_DEVICE_SUPPORT_HIGH_REFRESH_RATE, hasHighRefreshRate())
+            apply()
         }
     }
 
@@ -115,17 +134,12 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
         val switchEnforceGooglePhotos = findViewById<SwitchCompat>(R.id.spoof_only_in_google_photos_switch)
         val deviceSpooferSpinner = findViewById<Spinner>(R.id.device_spoofer_spinner)
         val gameSpooferSpinner = findViewById<Spinner>(R.id.game_spoofer_spinner)
-        val deviceSpooferDesc = findViewById<TextView>(R.id.device_spoofer_desc)
         val forceStopGooglePhotos = findViewById<Button>(R.id.force_stop_google_photos)
         val openGooglePhotos = findViewById<ImageButton>(R.id.open_google_photos)
         val telegramLink = findViewById<TextView>(R.id.telegram_group)
         val updateAvailableLink = findViewById<TextView>(R.id.update_available_link)
 
-        if (!hasHighRefreshRate(applicationContext)) {
-            deviceSpooferDesc.setText(R.string.refresh_rate_desc)
-        } else {
-            deviceSpooferDesc.setText(R.string.spoofs_build_and_features)
-        }
+        updateTextView()
 
         /**
          * Set default spoof device to [DeviceProps.defaultDeviceName].
@@ -138,6 +152,7 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
                 putString(PREF_DEVICE_TO_SPOOF, DeviceProps.defaultDeviceName)
                 putBoolean(PREF_OVERRIDE_ROM_FEATURE_LEVELS, true)
                 putBoolean(PREF_STRICTLY_CHECK_GOOGLE_PHOTOS, true)
+                putBoolean(PREF_DEVICE_SUPPORT_HIGH_REFRESH_RATE, hasHighRefreshRate())
                 putStringSet(
                     PREF_SPOOF_FEATURES_LIST,
                     DeviceProps.defaultFeatures.map { it.displayName }.toSet()
@@ -213,7 +228,6 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
          * See [DeviceSpooferGame].
          */
         gameSpooferSpinner.apply {
-            if (!hasHighRefreshRate(context)) isEnabled = false
             val deviceNames = DeviceProps.gameDevices.map { it.deviceName }
             val aa = ArrayAdapter(this@ActivityMain,android.R.layout.simple_spinner_item, deviceNames)
 
@@ -303,6 +317,11 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateTextView()
+    }
+
     /**
      * Method to show latest changes.
      */
@@ -314,19 +333,12 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
             .show()
     }
 
-    private fun hasHighRefreshRate(context: Context): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val modes: Array<Display.Mode> = context.display!!.supportedModes
-            if (modes.size <= 1) {
-                return false
-            }
-        } else {
-            val display: Display =
+    private fun hasHighRefreshRate(): Boolean {
+        val display: Display =
                 (getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-            val refreshRating: Float = display.refreshRate
-            if (refreshRating <= 60) {
-                return false
-            }
+        val refreshRating: Int = display.refreshRate.roundToInt()
+        if (refreshRating <= 60) {
+            return false
         }
         return true
     }

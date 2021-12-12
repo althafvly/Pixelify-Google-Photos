@@ -2,6 +2,7 @@ package balti.xposed.pixelifygooglephotos
 
 import android.util.Log
 import balti.xposed.pixelifygooglephotos.Constants.PACKAGE_NAME_GOOGLE_PHOTOS
+import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_SUPPORT_HIGH_REFRESH_RATE
 import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF
 import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF_GAME
 import balti.xposed.pixelifygooglephotos.Constants.PREF_STRICTLY_CHECK_GOOGLE_PHOTOS
@@ -82,9 +83,10 @@ class DeviceSpoofer: IXposedHookLoadPackage {
         /**
          * If user selected any non-pixel, check packages and apply props for those only.
          */
-
         for (element in gamePackages) {
-            if (lpparam?.packageName == element && (deviceName == "OnePlus 7 Pro" || deviceName == "Sony Xperia 5 II")) {
+            if (pref.getBoolean(PREF_DEVICE_SUPPORT_HIGH_REFRESH_RATE, false) &&
+                lpparam?.packageName == element && (deviceName == "OnePlus 7 Pro" ||
+                        deviceName == "Sony Xperia 5 II")) {
                 log("Device spoof for games: ${finalDeviceToSpoofGame?.deviceName}")
 
                 finalDeviceToSpoofGame?.props?.run {
