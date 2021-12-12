@@ -39,22 +39,29 @@
     <string name="update_available">App update available!</string>
 
     <!--changelog-->
-    <string name="version_head">Version 3.0</string>
+    <string name="version_head">Version 1.3</string>
     <string name="version_desc">
         \n
         # Add option to block / override higher feature levels from custom ROMs.\n
         # Fix user selection not being read in higher Android versions.\n
+        # Added support for games spoofing.\n
+        # Check refresh rate before spoofing - Fixed crash.\n
+        # Added support for more games.\n
     </string>
 
     <!--menu_activity_main.xml-->
     <string name="changelog">Change log</string>
-    <string name="refresh_rate_desc">Your current refresh rate does not support 90/120fps gaming, please enable 90/120Hz if your hardware supports.</string>
+    <string name="refresh_rate_desc">Display does not support 90/120fps gaming.\n
+        Please enable 90/120Hz if your hardware supports.\n</string>
     <string name="games">Supported Games</string>
     <string name="supported_games">
         \n
-        - PUBG (90fps) -> OnePlus 7 Pro\n
-        - COD (120fps) -> Sony Xperia 5 II\n
-        - Asphalt 9 (120fps) -> OnePlus 7 Pro\n
+        \u2022 PUBG/BGMI -> OnePlus 7 Pro or Xiaomi Mi 11 Ultra\n
+        \u2022 COD/BDM -> Sony Xperia 5 II or Samsung Galaxy S9 Plus\n
+        \u2022 Asphalt 9 (120fps) -> OnePlus 7 Pro\n
+        \u2022 Mobile Legends -> Mi 10 Pro\n
+        \u2022 League of Legends -> Samsung Galaxy S20 Ultra\n
+        \u2022 Fortnite -> OnePlus 8\n
     </string>
 
     <!--ActivityMain.xml-->

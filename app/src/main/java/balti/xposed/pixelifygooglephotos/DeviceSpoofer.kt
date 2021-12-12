@@ -6,6 +6,7 @@ import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_SUPPORT_HIGH_REFR
 import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF
 import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF_GAME
 import balti.xposed.pixelifygooglephotos.Constants.PREF_STRICTLY_CHECK_GOOGLE_PHOTOS
+import balti.xposed.pixelifygooglephotos.DeviceProps.getDevices
 import balti.xposed.pixelifygooglephotos.DeviceProps.getGamePackages
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XSharedPreferences
@@ -60,6 +61,7 @@ class DeviceSpoofer: IXposedHookLoadPackage {
 
         val deviceName = finalDeviceToSpoofGame?.deviceName
         val gamePackages = getGamePackages()
+        val gameDevices = getDevices()
         log("Loaded DeviceSpoofer for ${lpparam?.packageName}")
 
         /**
@@ -85,8 +87,7 @@ class DeviceSpoofer: IXposedHookLoadPackage {
          */
         for (element in gamePackages) {
             if (pref.getBoolean(PREF_DEVICE_SUPPORT_HIGH_REFRESH_RATE, false) &&
-                lpparam?.packageName == element && (deviceName == "OnePlus 7 Pro" ||
-                        deviceName == "Sony Xperia 5 II")) {
+                lpparam?.packageName == element && (deviceName in gameDevices)) {
                 log("Device spoof for games: ${finalDeviceToSpoofGame?.deviceName}")
 
                 finalDeviceToSpoofGame?.props?.run {

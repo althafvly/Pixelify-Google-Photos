@@ -120,7 +120,23 @@ object DeviceProps {
             "com.pubg.imobile",
             "com.pubg.newstate",
             "com.gameloft.android.ANMP.GloftA9HM",
-            "com.activision.callofduty.shooter")
+            "com.activision.callofduty.shooter",
+            "com.madfingergames.deadtrigger2",
+            "com.riotgames.league.wildrift",
+            "com.mobile.legends",
+            "com.ngame.allstar.eu",
+            "com.pearlabyss.blackdesertm.gl",
+            "com.epicgames.fortnite")
+    }
+
+    fun getDevices(): List<String> {
+        return listOf("OnePlus 7 Pro",
+            "OnePlus 8",
+            "Sony Xperia 5 II",
+            "Xiaomi Mi 11 Ultra",
+            "Mi 10 Pro",
+            "Samsung Galaxy S9 Plus",
+            "Samsung Galaxy S20 Ultra")
     }
 
     /**
@@ -267,8 +283,43 @@ object DeviceProps {
         ),
 
         DeviceEntries(
+            "OnePlus 8", hashMapOf(
+                Pair("MODEL", "IN2013"),
+            ),
+            "",
+        ),
+
+        DeviceEntries(
             "Sony Xperia 5 II", hashMapOf(
                 Pair("MODEL", "SO-52A"),
+            ),
+            "",
+        ),
+
+        DeviceEntries(
+            "Xiaomi Mi 11 Ultra", hashMapOf(
+                Pair("MODEL", "M2102K1C"),
+            ),
+            "",
+        ),
+
+        DeviceEntries(
+            "Mi 10 Pro", hashMapOf(
+                Pair("MODEL", "Mi 10 Pro"),
+            ),
+            "",
+        ),
+
+        DeviceEntries(
+            "Samsung Galaxy S9 Plus", hashMapOf(
+                Pair("MODEL", "SM-G965F"),
+            ),
+            "",
+        ),
+
+        DeviceEntries(
+            "Samsung Galaxy S20 Ultra", hashMapOf(
+                Pair("MODEL", "SM-G9880"),
             ),
             "",
         ),
