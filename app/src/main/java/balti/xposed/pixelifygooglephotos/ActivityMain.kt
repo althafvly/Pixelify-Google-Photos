@@ -72,7 +72,7 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
             deviceSpooferDesc.setText(R.string.refresh_rate_desc)
             gameSpooferSpinner.isEnabled = false
         } else {
-            deviceSpooferDesc.setText(R.string.spoofs_build_and_features)
+            deviceSpooferDesc.setText(R.string.spoofs_games)
             gameSpooferSpinner.isEnabled = true
         }
         pref?.edit()?.run {
