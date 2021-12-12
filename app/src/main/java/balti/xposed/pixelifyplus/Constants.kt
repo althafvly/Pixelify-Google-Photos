@@ -1,4 +1,4 @@
-package balti.xposed.pixelifygooglephotos
+package balti.xposed.pixelifyplus
 
 object Constants {
 
@@ -6,10 +6,8 @@ object Constants {
 
     val TELEGRAM_GROUP = "https://t.me/pixelifyGooglePhotos"
 
-    val UPDATE_INFO_URL = "https://raw.githubusercontent.com/BaltiApps/Pixelify-Google-Photos/main/update_info.json"
-    val UPDATE_INFO_URL2 = "https://raw.githubusercontent.com/Xposed-Modules-Repo/balti.xposed.pixelifygooglephotos/main/update_info.json"
-    val RELEASES_URL = "https://github.com/BaltiApps/Pixelify-Google-Photos/releases"
-    val RELEASES_URL2 = "https://github.com/Xposed-Modules-Repo/balti.xposed.pixelifygooglephotos/releases"
+    val UPDATE_INFO_URL = "https://raw.githubusercontent.com/althafvly/Pixelifyplus/main/update_info.json"
+    val RELEASES_URL = "https://github.com/althafvly/Pixelifyplus/releases"
 
     val FIELD_LATEST_VERSION_CODE = "latest_version_code"
 

@@ -1,10 +1,10 @@
-package balti.xposed.pixelifygooglephotos
+package balti.xposed.pixelifyplus
 
 import android.util.Log
-import balti.xposed.pixelifygooglephotos.Constants.PACKAGE_NAME_GOOGLE_PHOTOS
-import balti.xposed.pixelifygooglephotos.Constants.PREF_OVERRIDE_ROM_FEATURE_LEVELS
-import balti.xposed.pixelifygooglephotos.Constants.PREF_SPOOF_FEATURES_LIST
-import balti.xposed.pixelifygooglephotos.Constants.SHARED_PREF_FILE_NAME
+import balti.xposed.pixelifyplus.Constants.PACKAGE_NAME_GOOGLE_PHOTOS
+import balti.xposed.pixelifyplus.Constants.PREF_OVERRIDE_ROM_FEATURE_LEVELS
+import balti.xposed.pixelifyplus.Constants.PREF_SPOOF_FEATURES_LIST
+import balti.xposed.pixelifyplus.Constants.SHARED_PREF_FILE_NAME
 import de.robv.android.xposed.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
@@ -29,8 +29,8 @@ class FeatureSpoofer: IXposedHookLoadPackage {
      * Simple message to log messages in lsposed log as well as android log.
      */
     private fun log(message: String){
-        XposedBridge.log("PixelifyGooglePhotos: $message")
-        Log.d("PixelifyGooglePhotos", message)
+        XposedBridge.log("Pixelify+: $message")
+        Log.d("Pixelify+", message)
     }
 
     /**

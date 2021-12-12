@@ -1,4 +1,4 @@
-package balti.xposed.pixelifygooglephotos
+package balti.xposed.pixelifyplus
 
 import android.app.Activity
 import android.content.Context
@@ -13,20 +13,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-import balti.xposed.pixelifygooglephotos.Constants.FIELD_LATEST_VERSION_CODE
-import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_SUPPORT_HIGH_REFRESH_RATE
-import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF
-import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF_GAME
-import balti.xposed.pixelifygooglephotos.Constants.PREF_LAST_VERSION
-import balti.xposed.pixelifygooglephotos.Constants.PREF_OVERRIDE_ROM_FEATURE_LEVELS
-import balti.xposed.pixelifygooglephotos.Constants.PREF_SPOOF_FEATURES_LIST
-import balti.xposed.pixelifygooglephotos.Constants.PREF_STRICTLY_CHECK_GOOGLE_PHOTOS
-import balti.xposed.pixelifygooglephotos.Constants.RELEASES_URL
-import balti.xposed.pixelifygooglephotos.Constants.RELEASES_URL2
-import balti.xposed.pixelifygooglephotos.Constants.SHARED_PREF_FILE_NAME
-import balti.xposed.pixelifygooglephotos.Constants.TELEGRAM_GROUP
-import balti.xposed.pixelifygooglephotos.Constants.UPDATE_INFO_URL
-import balti.xposed.pixelifygooglephotos.Constants.UPDATE_INFO_URL2
+import balti.xposed.pixelifyplus.Constants.FIELD_LATEST_VERSION_CODE
+import balti.xposed.pixelifyplus.Constants.PREF_DEVICE_SUPPORT_HIGH_REFRESH_RATE
+import balti.xposed.pixelifyplus.Constants.PREF_DEVICE_TO_SPOOF
+import balti.xposed.pixelifyplus.Constants.PREF_DEVICE_TO_SPOOF_GAME
+import balti.xposed.pixelifyplus.Constants.PREF_LAST_VERSION
+import balti.xposed.pixelifyplus.Constants.PREF_OVERRIDE_ROM_FEATURE_LEVELS
+import balti.xposed.pixelifyplus.Constants.PREF_SPOOF_FEATURES_LIST
+import balti.xposed.pixelifyplus.Constants.PREF_STRICTLY_CHECK_GOOGLE_PHOTOS
+import balti.xposed.pixelifyplus.Constants.RELEASES_URL
+import balti.xposed.pixelifyplus.Constants.SHARED_PREF_FILE_NAME
+import balti.xposed.pixelifyplus.Constants.TELEGRAM_GROUP
+import balti.xposed.pixelifyplus.Constants.UPDATE_INFO_URL
 import com.google.android.material.snackbar.Snackbar
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -421,7 +419,6 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
          */
         return when {
             getUpdateStatus(UPDATE_INFO_URL) -> RELEASES_URL
-            getUpdateStatus(UPDATE_INFO_URL2) -> RELEASES_URL2
             else -> null
         }
     }

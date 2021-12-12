@@ -1,13 +1,13 @@
-package balti.xposed.pixelifygooglephotos
+package balti.xposed.pixelifyplus
 
 import android.util.Log
-import balti.xposed.pixelifygooglephotos.Constants.PACKAGE_NAME_GOOGLE_PHOTOS
-import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_SUPPORT_HIGH_REFRESH_RATE
-import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF
-import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF_GAME
-import balti.xposed.pixelifygooglephotos.Constants.PREF_STRICTLY_CHECK_GOOGLE_PHOTOS
-import balti.xposed.pixelifygooglephotos.DeviceProps.getDevices
-import balti.xposed.pixelifygooglephotos.DeviceProps.getGamePackages
+import balti.xposed.pixelifyplus.Constants.PACKAGE_NAME_GOOGLE_PHOTOS
+import balti.xposed.pixelifyplus.Constants.PREF_DEVICE_SUPPORT_HIGH_REFRESH_RATE
+import balti.xposed.pixelifyplus.Constants.PREF_DEVICE_TO_SPOOF
+import balti.xposed.pixelifyplus.Constants.PREF_DEVICE_TO_SPOOF_GAME
+import balti.xposed.pixelifyplus.Constants.PREF_STRICTLY_CHECK_GOOGLE_PHOTOS
+import balti.xposed.pixelifyplus.DeviceProps.getDevices
+import balti.xposed.pixelifyplus.DeviceProps.getGamePackages
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XSharedPreferences
 import de.robv.android.xposed.XposedBridge
@@ -26,8 +26,8 @@ class DeviceSpoofer: IXposedHookLoadPackage {
      * Simple message to log messages in lsposed log as well as android log.
      */
     private fun log(message: String){
-        XposedBridge.log("PixelifyGooglePhotos: $message")
-        Log.d("PixelifyGooglePhotos", message)
+        XposedBridge.log("Pixelify+: $message")
+        Log.d("Pixelify+", message)
     }
 
     /**
