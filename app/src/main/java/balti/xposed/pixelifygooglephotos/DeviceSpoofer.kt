@@ -3,9 +3,9 @@ package balti.xposed.pixelifygooglephotos
 import android.util.Log
 import balti.xposed.pixelifygooglephotos.Constants.PACKAGE_NAME_GOOGLE_PHOTOS
 import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF
+import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF_GAME
 import balti.xposed.pixelifygooglephotos.Constants.PREF_STRICTLY_CHECK_GOOGLE_PHOTOS
-import balti.xposed.pixelifygooglephotos.DeviceProps.getCODPackages
-import balti.xposed.pixelifygooglephotos.DeviceProps.getPUBGPackages
+import balti.xposed.pixelifygooglephotos.DeviceProps.getGamePackages
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XSharedPreferences
 import de.robv.android.xposed.XposedBridge
@@ -45,51 +45,58 @@ class DeviceSpoofer: IXposedHookLoadPackage {
         DeviceProps.getDeviceProps(deviceName)
     }
 
+    private val finalDeviceToSpoofGame by lazy {
+        val deviceNameGame = pref.getString(PREF_DEVICE_TO_SPOOF_GAME, DeviceProps.defaultDeviceNameGame)
+        log("Device spoof for games: $deviceNameGame")
+        DeviceProps.getDevicePropsGames(deviceNameGame)
+    }
+
     /**
      * Inspired by:
      * https://github.com/itsuki-t/FakeDeviceData/blob/master/src/jp/rmitkt/xposed/fakedevicedata/FakeDeviceData.java
      */
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam?) {
 
-        /**
-         * If user selected any non-pixel, check packages and apply props for those only.
-         */
-        var isSupported = true
-        val deviceName = pref.getString(PREF_DEVICE_TO_SPOOF, DeviceProps.defaultDeviceName)
-        if (deviceName == "OnePlus 7 Pro") {
-            val pubgPackages = getPUBGPackages()
-            for (element in pubgPackages) {
-                if (lpparam?.packageName == element) isSupported = false
-            }
-        } else if (deviceName == "Sony Xperia 5 II") {
-            val codPackages = getCODPackages()
-            for (element in codPackages) {
-                if (lpparam?.packageName == element) isSupported = false
-            }
-        }
+        val deviceName = finalDeviceToSpoofGame?.deviceName
+        val gamePackages = getGamePackages()
+        log("Loaded DeviceSpoofer for ${lpparam?.packageName}")
 
         /**
          * If user selects to never use this on any other app other than Google photos,
          * then check package name and return if necessary.
          */
-        if (pref.getBoolean(PREF_STRICTLY_CHECK_GOOGLE_PHOTOS, true) &&
-            lpparam?.packageName != PACKAGE_NAME_GOOGLE_PHOTOS && isSupported) return
+        if (!pref.getBoolean(PREF_STRICTLY_CHECK_GOOGLE_PHOTOS, true) ||
+            lpparam?.packageName == PACKAGE_NAME_GOOGLE_PHOTOS) {
+            log("Device spoof: ${finalDeviceToSpoof?.deviceName}")
+            finalDeviceToSpoof?.props?.run {
+                if (keys.isEmpty()) return
+                val classLoader = lpparam?.classLoader ?: return
 
-        log("Loaded DeviceSpoofer for ${lpparam?.packageName}")
-        log("Device spoof: ${finalDeviceToSpoof?.deviceName}")
-
-        finalDeviceToSpoof?.props?.run {
-
-            if (keys.isEmpty()) return
-            val classLoader = lpparam?.classLoader ?: return
-
-            val classBuild = XposedHelpers.findClass("android.os.Build", classLoader)
-            keys.forEach {
-                XposedHelpers.setStaticObjectField(classBuild, it, this[it])
+                val classBuild = XposedHelpers.findClass("android.os.Build", classLoader)
+                keys.forEach {
+                    XposedHelpers.setStaticObjectField(classBuild, it, this[it])
+                }
             }
-
         }
 
-    }
+        /**
+         * If user selected any non-pixel, check packages and apply props for those only.
+         */
 
+        for (element in gamePackages) {
+            if (lpparam?.packageName == element && (deviceName == "OnePlus 7 Pro" || deviceName == "Sony Xperia 5 II")) {
+                log("Device spoof for games: ${finalDeviceToSpoofGame?.deviceName}")
+
+                finalDeviceToSpoofGame?.props?.run {
+                    if (keys.isEmpty()) return
+                    val classLoader = lpparam.classLoader ?: return
+
+                    val classBuild = XposedHelpers.findClass("android.os.Build", classLoader)
+                    keys.forEach {
+                        XposedHelpers.setStaticObjectField(classBuild, it, this[it])
+                    }
+                }
+            }
+        }
+    }
 }

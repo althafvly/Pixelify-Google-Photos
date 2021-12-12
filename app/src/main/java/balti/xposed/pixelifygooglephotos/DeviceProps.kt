@@ -112,18 +112,15 @@ object DeviceProps {
         }
     }
 
-    fun getPUBGPackages(): List<String> {
+    fun getGamePackages(): List<String> {
         return listOf("com.tencent.ig",
             "com.pubg.krmobile",
             "com.vng.pubgmobile",
             "com.rekoo.pubgm",
             "com.pubg.imobile",
             "com.pubg.newstate",
-            "com.gameloft.android.ANMP.GloftA9HM")
-    }
-
-    fun getCODPackages(): List<String> {
-        return listOf( "com.activision.callofduty.shooter")
+            "com.gameloft.android.ANMP.GloftA9HM",
+            "com.activision.callofduty.shooter")
     }
 
     /**
@@ -283,6 +280,11 @@ object DeviceProps {
     fun getDeviceProps(deviceName: String?) = allDevices.find { it.deviceName == deviceName }
 
     /**
+     * Get instance of [DeviceEntries] from a supplied [deviceName].
+     */
+    fun getDevicePropsGames(deviceName: String?) = gameDevices.find { it.deviceName == deviceName }
+
+    /**
      * Call [getFeaturesUpTo] using a device name rather than feature level.
      * Used in spinner in main activity.
      */
@@ -296,6 +298,7 @@ object DeviceProps {
      * Default name of device to spoof.
      */
     val defaultDeviceName = "Pixel 5"
+    val defaultDeviceNameGame = "OnePlus 7 Pro"
 
     /**
      * Default feature level to spoof up to. Corresponds to what is expected for the device in [defaultDeviceName].

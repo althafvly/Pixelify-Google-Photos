@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import balti.xposed.pixelifygooglephotos.Constants.FIELD_LATEST_VERSION_CODE
 import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF
+import balti.xposed.pixelifygooglephotos.Constants.PREF_DEVICE_TO_SPOOF_GAME
 import balti.xposed.pixelifygooglephotos.Constants.PREF_LAST_VERSION
 import balti.xposed.pixelifygooglephotos.Constants.PREF_OVERRIDE_ROM_FEATURE_LEVELS
 import balti.xposed.pixelifygooglephotos.Constants.PREF_SPOOF_FEATURES_LIST
@@ -50,10 +51,15 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
         }
     }
 
-    private fun showRebootSnack(){
+    private fun showRebootSnack(isPhotos: Boolean = true){
         if (pref == null) return // don't display snackbar if module not active.
         val rootView = findViewById<ScrollView>(R.id.root_view_for_snackbar)
-        Snackbar.make(rootView, R.string.please_force_stop_google_photos, Snackbar.LENGTH_SHORT).show()
+        if (isPhotos) {
+            Snackbar.make(rootView, R.string.please_force_stop_google_photos, Snackbar.LENGTH_SHORT)
+                .show()
+        } else {
+            Snackbar.make(rootView, R.string.please_force_stop, Snackbar.LENGTH_SHORT).show()
+        }
     }
 
     /**
@@ -166,34 +172,6 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
         /**
          * See [DeviceSpoofer].
          */
-        gameSpooferSpinner.apply {
-            val deviceNames = DeviceProps.gameDevices.map { it.deviceName }
-            val aa = ArrayAdapter(this@ActivityMain,android.R.layout.simple_spinner_item, deviceNames)
-
-            aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            adapter = aa
-            val defaultSelection = pref?.getString(PREF_DEVICE_TO_SPOOF, DeviceProps.defaultDeviceName)
-            /** Second argument is `false` to prevent calling [peekFeatureFlagsChanged] on initialization */
-            setSelection(aa.getPosition(defaultSelection), false)
-
-            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    val deviceName = aa.getItem(position)
-                    pref?.edit()?.apply {
-                        putString(PREF_DEVICE_TO_SPOOF, deviceName)
-                        apply()
-                    }
-
-                    showRebootSnack()
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
-        }
-
-        /**
-         * See [DeviceSpoofer].
-         */
         deviceSpooferSpinner.apply {
             val deviceNames = DeviceProps.allDevices.map { it.deviceName }
             val aa = ArrayAdapter(this@ActivityMain,android.R.layout.simple_spinner_item, deviceNames)
@@ -218,6 +196,34 @@ class ActivityMain: AppCompatActivity(R.layout.activity_main) {
 
                     peekFeatureFlagsChanged(featureFlagsChanged)
                     showRebootSnack()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
+        }
+
+        /**
+         * See [DeviceSpooferGame].
+         */
+        gameSpooferSpinner.apply {
+            val deviceNames = DeviceProps.gameDevices.map { it.deviceName }
+            val aa = ArrayAdapter(this@ActivityMain,android.R.layout.simple_spinner_item, deviceNames)
+
+            aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter = aa
+            val defaultSelection = pref?.getString(PREF_DEVICE_TO_SPOOF_GAME, DeviceProps.defaultDeviceNameGame)
+            /** Second argument is `false` to prevent calling [peekFeatureFlagsChanged] on initialization */
+            setSelection(aa.getPosition(defaultSelection), false)
+
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val deviceNameGame = aa.getItem(position)
+                    pref?.edit()?.apply {
+                        putString(PREF_DEVICE_TO_SPOOF_GAME, deviceNameGame)
+                        apply()
+                    }
+
+                    showRebootSnack(false)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}

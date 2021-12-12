@@ -4,7 +4,6 @@ import android.util.Log
 import balti.xposed.pixelifygooglephotos.Constants.PACKAGE_NAME_GOOGLE_PHOTOS
 import balti.xposed.pixelifygooglephotos.Constants.PREF_OVERRIDE_ROM_FEATURE_LEVELS
 import balti.xposed.pixelifygooglephotos.Constants.PREF_SPOOF_FEATURES_LIST
-import balti.xposed.pixelifygooglephotos.Constants.PREF_STRICTLY_CHECK_GOOGLE_PHOTOS
 import balti.xposed.pixelifygooglephotos.Constants.SHARED_PREF_FILE_NAME
 import de.robv.android.xposed.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage
@@ -138,44 +137,44 @@ class FeatureSpoofer: IXposedHookLoadPackage {
          * If user selects to never use this on any other app other than Google photos,
          * then check package name and return if necessary.
          */
-        if (pref.getBoolean(PREF_STRICTLY_CHECK_GOOGLE_PHOTOS, true) &&
-            lpparam?.packageName != PACKAGE_NAME_GOOGLE_PHOTOS) return
+        if (lpparam?.packageName == PACKAGE_NAME_GOOGLE_PHOTOS) {
 
-        log("Loaded FeatureSpoofer for ${lpparam?.packageName}")
+            log("Loaded FeatureSpoofer for ${lpparam.packageName}")
 
-        /**
-         * Hook hasSystemFeature(String).
-         */
-        XposedHelpers.findAndHookMethod(
-            CLASS_APPLICATION_MANAGER,
-            lpparam?.classLoader,
-            METHOD_HAS_SYSTEM_FEATURE, String::class.java,
-            object: XC_MethodHook() {
+            /**
+             * Hook hasSystemFeature(String).
+             */
+            XposedHelpers.findAndHookMethod(
+                CLASS_APPLICATION_MANAGER,
+                lpparam.classLoader,
+                METHOD_HAS_SYSTEM_FEATURE, String::class.java,
+                object : XC_MethodHook() {
 
-                override fun beforeHookedMethod(param: MethodHookParam?) {
-                    super.beforeHookedMethod(param)
-                    spoofFeatureEnquiryResultIfNeeded(param)
+                    override fun beforeHookedMethod(param: MethodHookParam?) {
+                        super.beforeHookedMethod(param)
+                        spoofFeatureEnquiryResultIfNeeded(param)
+                    }
+
                 }
+            )
 
-            }
-        )
+            /**
+             * Hook hasSystemFeature(String, int).
+             */
+            XposedHelpers.findAndHookMethod(
+                CLASS_APPLICATION_MANAGER,
+                lpparam.classLoader,
+                METHOD_HAS_SYSTEM_FEATURE, String::class.java, Int::class.java,
+                object : XC_MethodHook() {
 
-        /**
-         * Hook hasSystemFeature(String, int).
-         */
-        XposedHelpers.findAndHookMethod(
-            CLASS_APPLICATION_MANAGER,
-            lpparam?.classLoader,
-            METHOD_HAS_SYSTEM_FEATURE, String::class.java, Int::class.java,
-            object: XC_MethodHook() {
+                    override fun beforeHookedMethod(param: MethodHookParam?) {
+                        super.beforeHookedMethod(param)
+                        spoofFeatureEnquiryResultIfNeeded(param)
+                    }
 
-                override fun beforeHookedMethod(param: MethodHookParam?) {
-                    super.beforeHookedMethod(param)
-                    spoofFeatureEnquiryResultIfNeeded(param)
                 }
-
-            }
-        )
+            )
+        }
 
     }
 }

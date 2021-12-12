@@ -10,7 +10,7 @@
     changelog
     -->
 
-    <string name="app_name">Pixelify Google Photos</string>
+    <string name="app_name">Pixelify+</string>
 
     <!--activity_main.xml-->
     <string name="reset">Reset</string>
@@ -46,6 +46,9 @@
         # Fix user selection not being read in higher Android versions.\n
     </string>
 
+    <!--menu_activity_main.xml-->
+    <string name="changelog">Change log</string>
+    <string name="games">Supported Games</string>
     <string name="supported_games">
         \n
         - PUBG (90fps) -> OnePlus 7 Pro\n
@@ -53,12 +56,9 @@
         - Asphalt 9 (120fps) -> OnePlus 7 Pro\n
     </string>
 
-    <!--menu_activity_main.xml-->
-    <string name="changelog">Change log</string>
-    <string name="games">Supported Games</string>
-
     <!--ActivityMain.xml-->
     <string name="please_force_stop_google_photos">Please force stop Google Photos to take effect.</string>
+    <string name="please_force_stop">Please force stop your app to take effect.</string>
 
     <!--feature_customize.xml-->
     <string name="save">Save</string>
