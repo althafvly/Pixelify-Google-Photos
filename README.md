@@ -1,14 +1,16 @@
-# Pixelify-Google-Photos
-LSPosed module to add Google Pixel features on Google Photos for any device.
+# Pixelify+
+LSPosed module to add Google Pixel features on Google Photos and spoof some games for any device.
 
-[LSPosed module repo](https://github.com/Xposed-Modules-Repo/balti.xposed.pixelifygooglephotos.git)  
+Based on:
+
+[LSPosed module repo](https://github.com/Xposed-Modules-Repo/balti.xposed.pixelifygooglephotos.git)
 [Development repo](https://github.com/BaltiApps/Pixelify-Google-Photos.git)  
 
 [Telegram group link](https://t.me/pixelifyGooglePhotos)  
 
 ### Steps to use:
-1. Install Magisk, [LSPosed](https://github.com/LSPosed/LSPosed).  
-2. Install the apk of this app (available from [Releases](https://github.com/BaltiApps/Pixelify-Google-Photos/releases) page.)  
+1. Install Magisk canary and enable Zygisk, [LSPosed](https://github.com/LSPosed/LSPosed).  
+2. Install the apk of this app (available from [Releases](https://github.com/althafvly/Pixelifyplus/releases) page.)  
 3. Open LSPosed app and enable the module. Google Photos will be automatically selected.  
 4. Reboot. Enjoy. (If needed, you might need to clear data of Google Photos app).  
 
